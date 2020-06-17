@@ -3,12 +3,13 @@
  * @author @fabfuel <fabian@fabfuel.de>
  * @created 14.11.14, 08:39
  */
+
 namespace Fabfuel\Prophiler\Plugin\Phalcon\Db;
 
 use Fabfuel\Prophiler\Benchmark\BenchmarkInterface;
 use Fabfuel\Prophiler\Plugin\PluginAbstract;
-use Phalcon\Events\Event;
-use Phalcon\Db\Adapter;
+use Phalcon\Db\Adapter\AdapterInterface;
+use Phalcon\Events\EventInterface;
 
 /**
  * Class AdapterPlugin
@@ -18,18 +19,18 @@ class AdapterPlugin extends PluginAbstract
     /**
      * @var BenchmarkInterface
      */
-    private $benchmark;
+    private BenchmarkInterface $benchmark;
 
     /**
      * Start the query benchmark
      *
-     * @param Event $event
-     * @param Adapter $database
+     * @param EventInterface $event
+     * @param AdapterInterface $database
      */
-    public function beforeQuery(Event $event, Adapter $database)
+    public function beforeQuery(EventInterface $event, AdapterInterface $database)
     {
         $metadata = [
-            'query' => $database->getSQLStatement()
+            'query' => $database->getSQLStatement(),
         ];
         $params = $database->getSQLVariables();
         if (isset($params)) {
